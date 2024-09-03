@@ -1,6 +1,6 @@
 package controller;
 
-import view.server.ServerWindow;
+import view.server.ServerGUI;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -82,7 +82,7 @@ public class SettingWindow extends JFrame {
         serverStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ServerWindow();
+                new ServerGUI();
             }
         });
         add(panelGroup, BorderLayout.SOUTH);

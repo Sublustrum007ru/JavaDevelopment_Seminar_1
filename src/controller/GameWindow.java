@@ -1,6 +1,6 @@
 package controller;
 
-import view.client.ClientWindow;
+import view.client.ClientGUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +46,7 @@ public class GameWindow extends JFrame {
         btnChat.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ClientWindow();
+                new ClientGUI();
             }
         });
 

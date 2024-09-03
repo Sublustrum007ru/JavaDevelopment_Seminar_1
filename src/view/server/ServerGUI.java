@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ServerWindow extends JFrame{
+public class ServerGUI extends JFrame{
 
     private static final int WIDTH = 300;
     private static final int HEIDTH = 350;
@@ -15,7 +15,7 @@ public class ServerWindow extends JFrame{
     JButton btnStart, btnStop;
     JTextArea textArea;
 
-    public ServerWindow(){
+    public ServerGUI(){
         setTitle("Server");
         setSize(WIDTH, HEIDTH);
         setVisible(true);

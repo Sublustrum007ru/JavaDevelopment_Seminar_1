@@ -1,18 +1,14 @@
 package view.client;
 
 import controller.impl.FileOperation;
-import view.server.ServerWindow;
+import view.server.ServerGUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.ArrayList;
+import java.awt.event.*;
 import java.util.List;
-import java.util.Objects;
 
-public class ClientWindow extends JFrame {
+public class ClientGUI extends JFrame {
     private final int WIDTH = 450;
     private final int HEGHT = 450;
     private final JPanel panelTOP = new JPanel(new GridLayout(2, 3));
@@ -33,8 +29,7 @@ public class ClientWindow extends JFrame {
     private final String[] users = {"Ivan", "Vadim", "Evgeniy", "Anton", "Nataliya", "Anastsiya", "Ekaterina", "Sergey", "Tatyana", "Valentin", "Varvara"};
     private final FileOperation fo = new FileOperation();
 
-
-    public ClientWindow() {
+    public ClientGUI() {
         setTitle("Client");
         setSize(WIDTH, HEGHT);
         setResizable(false);
@@ -52,26 +47,44 @@ public class ClientWindow extends JFrame {
         repaint();
 
         listUsers.setListData(users);
-        JScrollPane scrollPane = new JScrollPane(listUsers);
-        panelChat.add(textAreaChat);
-        panelChat.add(scrollPane);
+        JScrollPane scrollPane1 = new JScrollPane(textAreaChat);
+        JScrollPane scrollPane2 = new JScrollPane(listUsers);
+        panelChat.add(scrollPane1);
+        panelChat.add(scrollPane2);
         add(panelChat);
         repaint();
+
 
         btnSend.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!textAreaSendMsg.getText().isEmpty()) {
-                    textAreaChat.append(textFiedLog.getText() + ": " + textAreaSendMsg.getText() + "\n");
-                    fo.writeFile("log.txt", textFiedLog.getText() + ": " + textAreaSendMsg.getText());
-                    repaint();
+                if (ServerGUI.checkServerWorking()) {
+                    sendMSG(textAreaSendMsg.getText());
+                    clerFieldMSG();
                 }
             }
         });
+
+        textAreaSendMsg.addKeyListener(new KeyAdapter() {
+
+            public void keyReleased(KeyEvent e) {
+                if (ServerGUI.checkServerWorking()) {
+                    if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                        String msg = textAreaSendMsg.getText();
+                        sendMSG(msg);
+                        clerFieldMSG();
+                    }
+                }else{
+                    clerFieldMSG();
+                }
+            }
+
+        });
+
         btnConnect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (ServerWindow.checkServerWorking()) {
+                if (ServerGUI.checkServerWorking()) {
                     textAreaChat.setText(null);
                     List<String> temp = fo.readFile("log.txt");
                     for (int i = 0; i < temp.size(); i++) {
@@ -85,6 +98,7 @@ public class ClientWindow extends JFrame {
 
             }
         });
+
         panelBOTTOM.add(textAreaSendMsg);
         panelBOTTOM.add(btnSend);
         add(panelBOTTOM, BorderLayout.SOUTH);
@@ -93,4 +107,15 @@ public class ClientWindow extends JFrame {
 
     }
 
+    public void sendMSG(String message) {
+        if (!textAreaSendMsg.getText().isEmpty()) {
+            textAreaChat.append(textFiedLog.getText() + ": " + message.replace("\n","") + "\n");
+            fo.writeFile("log.txt", textFiedLog.getText() + ": " + message.replace("\n",""));
+            repaint();
+        }
+    }
+
+    public void clerFieldMSG() {
+        textAreaSendMsg.setText(null);
+    }
 }
