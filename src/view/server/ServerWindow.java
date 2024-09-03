@@ -28,7 +28,7 @@ public class ServerWindow extends JFrame{
         btnStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(isServerWorking == true){
+                if(checkServerWorking()){
                     textArea.setText("The server is already runnig");
                     return;
                 }
@@ -40,7 +40,7 @@ public class ServerWindow extends JFrame{
         btnStop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(isServerWorking == false){
+                if(checkServerWorking()){
                     textArea.setText("The server is already stopped");
                     return;
                 }
@@ -56,4 +56,7 @@ public class ServerWindow extends JFrame{
         repaint();
     }
 
+    public static boolean checkServerWorking() {
+        return isServerWorking;
+    }
 }
